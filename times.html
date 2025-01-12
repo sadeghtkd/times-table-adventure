@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Times Table Adventure</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+
+        .level-select {
+            margin: 20px 0;
+        }
+
+        .times-button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .times-button:hover {
+            transform: scale(1.1);
+        }
+
+        .times-button.active {
+            background-color: #2ecc71;
+        }
+
+        .question-container {
+            font-size: 24px;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .answer-input {
+            font-size: 20px;
+            padding: 10px;
+            width: 100px;
+            border: 2px solid #4a90e2;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .check-button {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+
+        .result {
+            font-size: 20px;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 20px;
+            background-color: #2ecc71;
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            min-width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Times Table Adventure! 🌟</h1>
+        
+        <div class="level-select">
+            <p>Choose your times table:</p>
+            <div id="timesButtons"></div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div>Score: <span id="score">0</span></div>
+            </div>
+            <div class="stat-box">
+                <div>Streak: <span id="streak">0</span>🔥</div>
+            </div>
+        </div>
+
+        <div class="question-container">
+            <p id="question">Select a times table to start!</p>
+            <input type="number" id="answer" class="answer-input" placeholder="?" disabled>
+        </div>
+
+        <button id="checkAnswer" class="check-button" disabled>Check Answer</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        let currentNumber = 0;
+        let currentQuestion = 0;
+        let score = 0;
+        let streak = 0;
+        let progress = 0;
+        let questionsPerRound = 10;
+
+        // Create times table buttons
+        const timesButtons = document.getElementById('timesButtons');
+        for (let i = 1; i <= 10; i++) {
+            const button = document.createElement('button');
+            button.textContent = i + '×';
+            button.className = 'times-button';
+            button.onclick = () => startGame(i);
+            timesButtons.appendChild(button);
+        }
+
+        function startGame(number) {
+            // Reset game state
+            currentNumber = number;
+            score = 0;
+            streak = 0;
+            progress = 0;
+            updateStats();
+            
+            // Update UI
+            document.querySelectorAll('.times-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`button:nth-child(${number})`).classList.add('active');
+            document.getElementById('answer').disabled = false;
+            document.getElementById('checkAnswer').disabled = false;
+            
+            // Generate first question
+            generateQuestion();
+        }
+
+        function generateQuestion() {
+            const multiplicand = Math.floor(Math.random() * 10) + 1;
+            currentQuestion = multiplicand;
+            document.getElementById('question').textContent = 
+                `${currentNumber} × ${multiplicand} = ?`;
+            document.getElementById('answer').value = '';
+            document.getElementById('result').textContent = '';
+        }
+
+        function updateStats() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('streak').textContent = streak;
+            document.getElementById('progressBar').style.width = `${(progress/questionsPerRound) * 100}%`;
+        }
+
+        document.getElementById('checkAnswer').onclick = () => {
+            const answer = parseInt(document.getElementById('answer').value);
+            const correctAnswer = currentNumber * currentQuestion;
+            
+            if (answer === correctAnswer) {
+                document.getElementById('result').textContent = '✨ Correct! Well done! ✨';
+                document.getElementById('result').className = 'result correct';
+                score += 10;
+                streak++;
+                progress++;
+            } else {
+                document.getElementById('result').textContent = 
+                    `Oops! ${currentNumber} × ${currentQuestion} = ${correctAnswer}. Try again!`;
+                document.getElementById('result').className = 'result incorrect';
+                streak = 0;
+            }
+            
+            updateStats();
+            
+            // Check if round is complete
+            if (progress >= questionsPerRound) {
+                setTimeout(() => {
+                    alert(`🎉 Round Complete! 🎉\nFinal Score: ${score}\nHighest Streak: ${streak}`);
+                    startGame(currentNumber); // Restart with same number
+                }, 1000);
+            } else {
+                // Generate next question after a short delay
+                setTimeout(generateQuestion, 1500);
+            }
+        };
+
+        // Allow Enter key to submit answer
+        document.getElementById('answer').addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') {
+                document.getElementById('checkAnswer').click();
+            }
+        });
+    </script>
+</body>
+</html>
