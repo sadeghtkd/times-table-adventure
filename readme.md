@@ -2,7 +2,7 @@
 
 A fun and interactive HTML5 game designed to help children learn multiplication tables through engaging gameplay. Perfect for elementary school students practicing their times tables from 1 to 10.
 
-![Times Table Adventure Game](https://raw.githubusercontent.com/api/placeholder/400/200)
+Times Table Adventure Game
 
 ## Features ✨
 
@@ -30,7 +30,7 @@ git clone https://github.com/sadeghtkd/times-table-adventure.git
 cd times-table-adventure
 ```
 
-3. Open `index.html` in your web browser
+3. Open `times.html` in your web browser
 
 That's it! No additional dependencies or setup required.
 
@@ -87,8 +87,6 @@ Contributions are welcome! Here's how you can help:
 - [ ] Include a high score system
 - [ ] Add different game modes
 - [ ] Implement a leaderboard
-- [ ] Add multiplayer support
-- [ ] Create a progressive web app version
 
 ## License 📄
 
