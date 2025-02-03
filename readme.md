@@ -16,7 +16,7 @@ Times Table Adventure Game
 
 ## Demo 🎮
 
-You can try the game here: [Live Demo](https://divat.ir/times.html)
+You can try the game here: [Live Demo](https://mashhadmap.com/times.html)
 
 ## Installation 🚀
 
@@ -94,9 +94,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Author ✍️
 
-[Your Name]
+[Sadegh Ghanbari + AI :)]
 - GitHub: [@sadeghtkd](https://github.com/sadeghtkd)
-- Website: [divat.ir](https://divat.ir/)
 
 ## Acknowledgments 🙏
 
